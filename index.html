@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planify</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="./script.js" defer></script>
+  <link rel="shortcut icon" type="imagex/png" href="./img/getposh.png">
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="logo-search-container">
+      <div class="logo">
+        <img src="./img/planify.png" alt="Planify Logo" />
+      </div>
+      <div class="search-container">
+        <div class="search-icon" id="search-icon">
+          <img src="./img/lupaPesquisa.png" alt="Ícone de Pesquisa" class="search-icon-img">
+        </div>
+        <input type="text" class="search-bar" id="search-bar" placeholder="Pesquisar eventos...">
+      </div>
+    </div>
+    <div class="auth-buttons">
+      <button class="btn entrar">Entrar</button>
+      <button id="botaoCadastrar">Cadastrar</button>
+    </div>
+  </header>
+
+  <!-- Header para usuário logado -->
+  <header class="top-bar logged-in" id="header-logged-in" style="display: none;">
+    <div class="logo-search-container">
+      <div class="logo">
+        <img src="./img/planify.png" alt="Planify Logo" />
+      </div>
+      <div class="search-container">
+        <div class="search-icon" id="search-icon-logged-in">
+          <img src="./img/lupaPesquisa.png" alt="Ícone de Pesquisa" class="search-icon-img">
+        </div>
+        <input type="text" class="search-bar" id="search-bar-logged-in" placeholder="Pesquisar eventos...">
+      </div>
+    </div>
+    <div class="user-actions">
+      <button class="btn criar-evento">Criar Evento</button>
+      <div class="user-info">
+        <img src="./img/pau nu jugu.jpg" alt="Foto do Usuário" class="profile-img" id="user-profile-img">
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="carousel">
+      <div class="carousel-image left">
+        <img src="./img/Rectangle (1).png" alt="Imagem 1">
+      </div>
+      <div class="carousel-image center">
+        <img src="./img/hero.png" alt="Imagem 2">
+      </div>
+      <div class="carousel-image right">
+        <img src="./img/Rectangle.png" alt="Imagem 3">
+      </div>
+    </div>
+
+    <!-- Setas 
+    <button class="carousel-arrow left">
+      <img src="./img/seta_esquerda.png" alt="Anterior">
+    </button>
+    <button class="carousel-arrow right">
+      <img src="./img/seta_direita.png" alt="Próximo">
+    </button>
+    </div>
+  -->
+    <div class="filtros">
+      <div class="filtro-box" id="tipo-evento-filtro-box">
+        <label for="tipo-evento">Procurando por</label>
+        <div class="filtro-input right-icon">
+          <select id="tipo-evento" autocomplete="off">
+            <option value="">Selecione o tipo</option>
+            <option value="show">Show Musical</option>
+            <option value="festa">Festa</option>
+            <option value="standup">Stand-up</option>
+            <!-- Adicione outras categorias se quiser -->
+          </select>
+          <img src="./img/Chevron Down.png" alt="Ícone de Show" class="icone-filtro">
+        </div>
+        <!-- Menu lateral de categorias e subcategorias, inicialmente oculto -->
+        <div class="menu-tipo-cascata" id="menu-tipo-cascata" style="display:none;">
+          <ul class="tipos-lista">
+            <li data-tipo="show">Show Musical</li>
+            <li data-tipo="festa">Festa</li>
+            <li data-tipo="standup">Stand-up</li>
+            <!-- Adicione outras categorias se quiser -->
+          </ul>
+          <ul class="subtipos-lista"></ul>
+        </div>
+      </div>
+
+      <div class="filtro-box" id="estado-filtro-box">
+        <label for="estado">Onde?</label>
+        <div class="filtro-input right-icon">
+          <select id="estado" autocomplete="off">
+            <option value="">Selecione o estado</option>
+            <option value="PE">Pernambuco</option>
+            <option value="SP">São Paulo</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="MG">Minas Gerais</option>
+            <option value="BA">Bahia</option>
+            <option value="RS">Rio Grande do Sul</option>
+            <!-- Adicione outros estados se quiser -->
+          </select>
+          <img src="./img/Chevron Down.png" alt="Ícone de seta" class="icone-filtro-right">
+        </div>
+        <!-- Menu lateral de estados e cidades, inicialmente oculto -->
+        <div class="menu-cidades-cascata" id="menu-cidades-cascata" style="display:none;">
+          <ul class="estados-lista"></ul>
+          <ul class="cidades-lista"></ul>
+        </div>
+      </div>
+
+      <div class="filtro-box" id="quando-filtro-box">
+        <label for="quando">Quando</label>
+        <div class="filtro-input right-icon">
+          <input type="text" id="quando" name="quando" placeholder="Selecione a data" readonly autocomplete="off">
+          <img src="./img/Calendar 17 (1).png" alt="Ícone Calendário" class="icone-filtro-right">
+        </div>
+        <!-- Menu lateral de calendário, inicialmente oculto -->
+        <div class="menu-calendario-cascata" id="menu-calendario-cascata" style="display:none;">
+          <div class="calendario-header">
+            <button class="cal-prev" type="button">&#8592;</button>
+            <span class="cal-mesano"></span>
+            <button class="cal-next" type="button">&#8594;</button>
+          </div>
+          <table class="calendario-table">
+            <thead>
+              <tr>
+                <th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sáb</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dias serão preenchidos via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POP-UP DE CADASTRO -->
+
+  <div id="cadastro-overlay" class="overlay hidden">
+    <div class="modal-cadastro">
+      <button class="close-btn" id="fecharCadastro">&times;</button>
+      <img src="./img/colorido.png" alt="Logo Planify" class="logo-cadastro">
+      <h2>Fazer Cadastro</h2>
+      <p>Bem-vindo! Crie sua conta agora mesmo.</p>
+
+      <form id="form-cadastro">
+        <input type="email" id="email" placeholder="E-mail" required>
+        <input type="password" id="senha" placeholder="Senha" required>
+        <input type="text" id="nome" placeholder="Nome completo" required>
+        <input type="text" id="nickname" placeholder="Nickname" required>
+        <button type="submit">Cadastrar</button>
+      </form>
+
+      <p class="login-link">Já tem uma conta? <a href="#" id="abrirLoginViaCadastro">Entrar aqui</a></p>
+      <p class="termos">
+        Ao se cadastrar, você concorda com os <a href="#">Termos de uso</a> e a <a href="#">Política de Privacidade</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- POP-UP DE LOGIN -->
+  <div id="login-overlay" class="overlay hidden">
+    <div class="modal-cadastro">
+      <button class="close-btn" id="fecharLogin">&times;</button>
+      <img src="./img/colorido.png" alt="Logo Planify" class="logo-cadastro">
+      <h2>Fazer Login</h2>
+      <p>Bem-vindo! Que bom ter você de volta!</p>
+
+      <form id="form-login">
+        <input type="email" id="login-email" placeholder="E-mail" required>
+        <input type="password" id="login-senha" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+      </form>
+
+      <p class="esqueceu-senha">
+        Esqueceu a senha? <a href="#">Clique aqui</a>
+      </p>
+
+      <p class="login-link">Ainda não tem uma conta? <a href="#" id="abrirCadastroViaLogin">Cadastre-se aqui</a></p>
+      <p class="termos">
+        Ao entrar, você concorda com os <a href="#">Termos de uso</a> e a <a href="#">Política de Privacidade</a>.
+      </p>
+    </div>
+  </div>
+
+  <!-- POP-UP DE RECUPERAÇÃO DE SENHA -->
+  <div id="recuperacao-overlay" class="overlay hidden">
+    <div class="modal-cadastro">
+      <button class="close-btn" id="fecharRecuperacao" onclick="fecharRecuperacaoSenha()">&times;</button>
+      <img src="./img/colorido.png" alt="Logo Planify" class="logo-cadastro">
+      <h2>Recuperar Senha</h2>
+      <p>Informe seu email para redefinir a senha.</p>
+
+      <form id="form-recuperar-senha">
+        <input type="email" id="recuperar-email" placeholder="E-mail" required>
+        <button type="submit">Enviar</button>
+      </form>
+
+      <p class="voltar-login">
+        <a href="#" id="voltarLogin" onclick="voltarParaLogin()">Voltar para login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- POP-UP DE VERIFICAÇÃO DE CÓDIGO -->
+<div id="verificacao-overlay" class="overlay hidden">
+  <div class="modal-cadastro">
+    <button class="close-btn" onclick="fecharVerificacao()">&times;</button>
+    <img src="./img/colorido.png" alt="Logo Planify" class="logo-cadastro">
+    <h2>Verificação</h2>
+    <p>Enviamos um código para seu e-mail. Insira abaixo para continuar:</p>
+
+    <form id="form-verificacao-codigo">
+      <input type="text" id="codigo-verificacao" placeholder="Código recebido" required>
+      <button type="submit">Verificar</button>
+    </form>
+
+    <p class="voltar-login">
+      <a href="#" onclick="voltarParaLogin()">Voltar para login</a>
+    </p>
+  </div>
+</div>
+
+<!-- POP-UP INSERIR NOVA SENHA -->
+<div id="nova-senha-overlay" class="overlay hidden">
+  <div class="modal-cadastro">
+    <button class="close-btn" onclick="fecharNovaSenha()">&times;</button>
+    <img src="./img/colorido.png" alt="Logo Planify" class="logo-cadastro">
+    <h2>Nova Senha</h2>
+    <p>Digite sua nova senha para redefinir:</p>
+
+    <form id="form-nova-senha">
+      <input type="password" id="nova-senha" placeholder="Nova senha" required>
+      <button type="submit">Salvar</button>
+    </form>
+
+    <p class="voltar-login">
+      <a href="#" onclick="voltarParaLogin()">Voltar para login</a>
+    </p>
+  </div>
+</div>
+
+  
+
+<!-- Linha separadora centralizada -->
+<div class="linha-separadora"></div>
+
+<!-- Seção de eventos -->
+<section class="eventos-inferior">
+  <h2>Eventos em Destaque</h2>
+
+  <div class="eventos-container">
+    <!-- Os cards serão preenchidos dinamicamente via JS -->
+  </div>
+</section>
+
+
+
+
+<!-- barra de rolagem personalizada -->
+<div class="scrollbar" id="barrinha">
+  <div class="force-overflow"></div>
+</div>
+
+</body>
+
+</html>

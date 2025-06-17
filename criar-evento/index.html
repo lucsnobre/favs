@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Evento - Trampo</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="background-gradient"></div>
+  <header class="header">
+    <div class="logo">
+      <img src="../img/logo.png" alt="Trampo Logo">
+    </div>
+    <div class="profile-user">
+      <img src="../img/profile.jpg" alt="Foto de perfil">
+    </div>
+  </header>
+  <main class="main-container">
+    <div class="event-glass-container">
+      <div class="form-header">
+        <h1 class="main-title">Criar Novo Evento</h1>
+        <p class="subtitle">Preencha os detalhes do seu evento</p>
+      </div>
+      
+      <form class="event-form-modern">
+        <div class="form-section">
+          <h2 class="section-title">Informações Básicas</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="event-name" class="required">Nome do Evento</label>
+              <div class="input-wrapper">
+                <input type="text" id="event-name" required placeholder="Digite o nome do evento">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="event-category" class="required">Categoria</label>
+              <div class="input-wrapper">
+                <select id="event-category" required>
+                  <option value="">Selecione uma categoria</option>
+                  <option value="musica">Música</option>
+                  <option value="teatro">Teatro</option>
+                  <option value="esporte">Esporte</option>
+                  <option value="gastronomia">Gastronomia</option>
+                  <option value="outros">Outros</option>
+                </select>
+                <i class="fas fa-tag"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="event-description" class="required">Descrição</label>
+            <div class="input-wrapper">
+              <textarea id="event-description" required placeholder="Descreva seu evento..."></textarea>
+              <i class="fas fa-align-left"></i>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="event-image" class="required">Imagem de Divulgação</label>
+            <div class="image-upload-modern">
+              <div class="image-placeholder-modern">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Arraste ou clique para fazer upload</span>
+                <small>PNG, JPG até 5MB</small>
+              </div>
+              <div class="image-preview-modern"></div>
+              <input type="file" id="event-image" accept="image/*" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="section-title">Data e Hora</h2>
+          <div class="datetime-grid">
+            <div class="datetime-card">
+              <div class="form-group">
+                <label for="event-date" class="required">Data</label>
+                <div class="input-wrapper">
+                  <input type="date" id="event-date" required>
+                  <i class="fas fa-calendar"></i>
+                </div>
+              </div>
+            </div>
+            <div class="datetime-card">
+              <div class="form-group">
+                <label for="event-time" class="required">Hora</label>
+                <div class="input-wrapper">
+                  <input type="time" id="event-time" required>
+                  <i class="fas fa-clock"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="section-title">Localização</h2>
+          <div class="location-grid">
+            <div class="form-group">
+              <label for="cep" class="required">CEP</label>
+              <div class="input-wrapper">
+                <input type="text" id="cep" required placeholder="00000-000">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="endereco" class="required">Endereço</label>
+              <div class="input-wrapper">
+                <input type="text" id="endereco" required placeholder="Rua, Avenida, etc">
+                <i class="fas fa-road"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="bairro" class="required">Bairro</label>
+              <div class="input-wrapper">
+                <input type="text" id="bairro" required>
+                <i class="fas fa-map"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cidade" class="required">Cidade</label>
+              <div class="input-wrapper">
+                <input type="text" id="cidade" required>
+                <i class="fas fa-city"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="estado" class="required">Estado</label>
+              <div class="input-wrapper">
+                <input type="text" id="estado" required>
+                <i class="fas fa-flag"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="section-title">Tipo de Ingresso</h2>
+          <div class="ticket-options">
+            <div class="ticket-type">
+              <input type="radio" id="free" name="ticket-type" value="free" required>
+              <label for="free" class="ticket-label">
+                <i class="fas fa-ticket-alt"></i>
+                <span>Gratuito</span>
+              </label>
+            </div>
+            <div class="ticket-type">
+              <input type="radio" id="paid" name="ticket-type" value="paid" required>
+              <label for="paid" class="ticket-label">
+                <i class="fas fa-dollar-sign"></i>
+                <span>Pago</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary">
+            <i class="fas fa-save"></i>
+            Salvar Rascunho
+          </button>
+          <button type="submit" class="btn-primary">
+            <i class="fas fa-paper-plane"></i>
+            Publicar Evento
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html> 

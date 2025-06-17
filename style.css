@@ -1,0 +1,1751 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #FBFCF8;
+  color: #333;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  height: 100px;
+  position: relative;
+  z-index: 10;
+}
+
+.logo-search-container {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Espaço entre o logo e a barra de pesquisa */
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute; /* Mantido para o container do ícone */
+  left: 18px; 
+  top: 50%;
+  transform: translateY(-50%);
+  /* width e height movidos para .search-icon-img */
+  cursor: pointer;
+  z-index: 10; /* Container do ícone acima de tudo */
+  display: flex; /* Para alinhar a imagem interna se necessário */
+  align-items: center;
+  justify-content: center;
+  /* A transição de 'left' permanece aqui, pois é o container que se move */
+  transition: left 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+.search-icon-img {
+  width: 28px; /* Ícone um pouco menor para estética */
+  height: 28px;
+  display: block; /* Garante que a imagem não tenha espaçamento extra */
+  transition: filter 0.3s ease-in-out, transform 0.3s ease;
+  filter: grayscale(0.2) brightness(0.9) contrast(1.1); /* Efeito mais sutil e moderno */
+}
+
+/* Círculo ao redor do ícone com efeito Liquid Glass */
+.search-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px; /* Círculo um pouco maior */
+  height: 60px;
+  background: rgba(255, 255, 255, 0.08); /* Fundo branco MAIS translúcido para glass effect */
+  border-radius: 50%;
+  z-index: -1; /* DEVE estar atrás do ícone, mas acima do fundo da barra */
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out, background-color 0.3s ease-in-out, transform 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6), backdrop-filter 0.3s ease;
+  backdrop-filter: blur(15px); /* Blur AINDA mais intenso para liquid glass */
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Borda um pouco mais sutil */
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.08), inset 0 0 8px rgba(255, 255, 255, 0.35); /* Sombra interna e externa suave ajustada */
+}
+
+.search-icon:hover::before { /* Estilo do círculo no hover do container */
+  background: rgba(255, 255, 255, 0.15); /* Levemente mais opaco no hover */
+  backdrop-filter: blur(14px); 
+  -webkit-backdrop-filter: blur(14px);
+  transform: translate(-50%, -50%) scale(1.05); /* Leve aumento no hover */
+}
+
+.search-icon:hover .search-icon-img { /* Estilo da imagem no hover do container */
+  transform: scale(1.1); /* Ícone aumenta um pouco no hover, sem movimento vertical */
+}
+
+/* Quando a barra de pesquisa está ativa */
+.search-icon.active { /* Estilo do container do ícone quando ativo */
+  left: calc(100% - 48px); /* Posição do container do ícone dentro da barra ativa */
+  /* filter e transform para a imagem foram movidos para .search-icon.active .search-icon-img */
+}
+
+.search-icon.active .search-icon-img {
+  filter: grayscale(0) brightness(1) contrast(1); /* Ícone com cor total e nítido */
+  transform: scale(1); /* Reset do scale do hover, garantindo que não haja transformações indesejadas */
+}
+
+.search-icon.active::before { /* Estilo do círculo quando o container do ícone está ativo */
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7); /* Círculo desaparece com animação de encolhimento */
+  pointer-events: none; /* Desabilita interações com o círculo invisível */
+}
+
+.search-bar {
+  font-family: 'Inter', sans-serif;
+  padding: 16px 28px 16px 75px; /* Padding: Top/Bottom, Direita, Esquerda (para ícone) */
+  border: 1.5px solid rgba(255, 255, 255, 0.25); /* Borda translúcida, estilo iOS */
+  border-radius: 40px; /* Bordas bem arredondadas */
+  width: 0;
+  opacity: 0;
+  transition: width 0.6s cubic-bezier(0.77, 0, 0.175, 1), 
+              opacity 0.5s ease-in-out, 
+              background-color 0.4s ease-in-out, 
+              box-shadow 0.4s ease-in-out, 
+              backdrop-filter 0.4s ease-in-out,
+              border-color 0.3s ease;
+  font-size: 1.15rem; /* Tamanho da fonte ligeiramente maior */
+  background-color: rgba(250, 250, 250, 0.65); /* Fundo principal com alta translucidez */
+  backdrop-filter: blur(16px); /* Efeito Liquid Glass pronunciado */
+  -webkit-backdrop-filter: blur(16px);
+  color: #2c221e; /* Cor do texto escura para contraste */
+  box-shadow: 0 8px 32px rgba(150, 70, 10, 0.12), /* Sombra principal mais suave */
+              inset 0 1px 2px rgba(255, 255, 255, 0.5); /* Sombra interna para efeito de profundidade */
+  pointer-events: none;
+  outline: none; /* Remove outline padrão */
+}
+
+.search-bar::placeholder {
+  color: rgba(44, 34, 30, 0.55); /* Placeholder mais integrado */
+  font-weight: 400;
+}
+
+.search-bar:focus {
+  outline: none; /* Já definido acima, mas reforça */
+  border-color: rgba(223, 109, 20, 0.4); /* Borda com cor do tema ao focar */
+  background-color: rgba(250, 250, 250, 0.75); /* Levemente mais opaco ao focar */
+  box-shadow: 0 10px 35px rgba(180, 88, 15, 0.18), /* Sombra mais pronunciada no foco */
+              inset 0 1px 3px rgba(255, 255, 255, 0.6);
+}
+
+.search-bar.active {
+  width: 350px; /* Largura da barra ativa */
+  opacity: 1;
+  pointer-events: auto; /* Permite digitação quando ativa */
+}
+
+.search-container .search-icon.active + .search-bar {
+    width: 320px;
+    opacity: 1;
+}
+
+/* O estilo .search-icon.active já foi definido acima para mover o ícone e esconder o círculo */
+
+.top-bar.logged-in {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-left: auto;
+  padding-right: 2rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.profile-img:hover {
+  transform: scale(1.05);
+}
+
+.btn.criar-evento {
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background-color: rgba(180, 88, 15, 0.76);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn.criar-evento:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+#header-logged-in .logo img {
+  height: 80px;
+  padding-top: 10px;
+  padding-left: 140px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: 100px;
+}
+
+.logo img {
+  height: 180px;
+  padding-top: 50px;
+  padding-left: 140px;
+  width: auto;
+  display: block;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+  padding-right: 2rem;
+}
+
+.auth-buttons .btn {
+  padding: 0.7rem 4.2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background-color: rgba(180, 88, 15, 0.76);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-buttons .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+#botaoCadastrar {
+  padding: 0.7rem 4.2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1.1rem;
+  background-color: rgba(180, 88, 15, 0.76);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#botaoCadastrar:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 40px;
+  /* Recuo lateral */
+  margin-top: 50px;
+}
+
+
+
+.carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 500px; /* BEM maior */
+  overflow: visible;
+  padding-top: 200px;
+}
+
+.carousel-image {
+  transition: all 0.5s ease;
+  top: 0;
+}
+
+.carousel-image img {
+  height: 100%;
+  max-height: 900px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.carousel-image.left {
+  transform: translateX(170px) scaleY(1.2); /* Mais afastada e estreita */
+  z-index: 2;
+  
+}
+
+/* Imagem da direita */
+.carousel-image.right {
+  transform: translateX(-200px) scaleY(1.2);
+  z-index: 2;
+}
+
+
+/* Imagem central: enorme e destacada */
+.carousel-image.center {
+  z-index: 3;
+  transform: scale(1.4); /* ou o valor que preferir */
+  position: relative;  /* adicionado */
+  height: auto;        /* para garantir que não esteja fixo */
+}
+
+
+.carousel-layer {
+  position: absolute;
+  height: 100%;
+
+  overflow: hidden;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+
+}
+
+
+.carousel-layer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.layer-left,
+.layer-right {
+  width: 50%;
+  height: 600px;
+  z-index: 1;
+  transform: scale(0.9);
+  border-radius: 20px;
+  overflow: hidden;
+  position: absolute;
+
+}
+
+
+
+
+.layer-left {
+  left: -120px;
+}
+
+.layer-right {
+  right: -120px;
+  padding-left: 220px;
+  /* igual à .layer-left */
+  transform: scale(0.9);
+  /* igual à .layer-left */
+  height: 600px;
+  z-index: 1;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.layer-center {
+  height: 600px;
+  width: 80%;
+  z-index: 3;
+  padding-top: 0;
+
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.carousel-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.4);
+  border: none;
+  border-radius: 50%;
+  padding: 0.7rem;
+  cursor: pointer;
+  z-index: 4;
+  transition: background-color 0.3s ease;
+}
+
+
+.carousel-arrow:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.carousel-arrow img {
+  width: 24px;
+  height: 24px;
+}
+
+
+.carousel-arrow.left {
+  left: 30px;
+}
+
+.carousel-arrow.right {
+  right: 30px;
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.filtros {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.4rem 1px;
+  background: linear-gradient(90deg, transparent 0%, #FF7100 100%, transparent 0%);
+  border-radius: 16px;
+  position: absolute;
+  bottom: -377px;
+  /* era -100px */
+  left: 49%;
+  transform: translateX(-50%);
+  width: 71%;
+  /* era 90% */
+  z-index: 10;
+  color: #FBFCF8;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  margin-bottom: 150px;
+}
+
+
+.filtro-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  width: 100%;
+}
+
+.icone-filtro {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.icone-filtro-right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.filtro-box select,
+.filtro-box input[type="date"],
+.filtro-box input[type="text"] {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  padding: 0.5rem 2.5rem 0.5rem 0.2rem;
+  font-size: 1.1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  z-index: 1;
+}
+
+.filtro-box select:focus,
+.filtro-box input[type="date"]:focus,
+.filtro-box input[type="text"]:focus {
+  outline: none;
+  border-bottom-color: #fff;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.filtro-box select option {
+  background: #FF7100;
+  color: #fff;
+}
+
+/* Ajuste específico para o ícone do tipo de evento */
+#tipo-evento-filtro-box .icone-filtro-right {
+  right: 0;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Ajuste específico para o ícone do estado */
+#estado-filtro-box .icone-filtro-right {
+  right: 0;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Ajuste específico para o ícone do calendário */
+#quando-filtro-box .icone-filtro-right {
+  right: 0;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Efeito hover nos ícones */
+.icone-filtro:hover,
+.icone-filtro-right:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Ajuste para o input de data */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.filtro-box {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #FBFCF8;
+  flex: 1;
+  min-width: 150px;
+  max-width: 300px;
+  padding: 0 1rem;
+  position: relative;
+  
+}
+
+.filtro-box:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  height: 60%;
+  width: 1px;
+  background-color: rgba(217, 217, 217, 0.4);
+}
+
+.filtro-box label {
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+  color: #FBFCF8;
+}
+
+.eventos-ativos {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.eventos-lista {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.3 ease;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
+
+.evento-card {
+  flex: 0 0 300px;
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  position: relative;
+  min-height: 370px;
+}
+
+.evento-card:hover {
+  transform: translateY(-5px);
+}
+
+.evento-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.evento-card .info {
+  padding: 1rem;
+}
+
+.evento-card h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.evento-card p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.evento-card button {
+  background: transparent;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.evento-arrow {
+  position: absolute;
+  bottom: -8px;
+  right: 0;
+  background: #c58a5b;
+  border-top-left-radius: 18px;
+  border-bottom-right-radius: 8px;
+  width: 72px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px #e0e0e0;
+  cursor: pointer;
+  transition: background 0.2s;
+  z-index: 2;
+}
+
+.evento-arrow img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: none;
+  display: block;
+  margin: 0 auto;
+}
+
+.evento-arrow:hover {
+  background: #a86c3d;
+}
+
+@media (max-width: 768px) {
+  .filtros {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .auth-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .eventos-lista {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .layer-center {
+    width: 95%;
+  }
+
+  .layer-left,
+  .layer-right {
+    display: none;
+  }
+}
+
+
+/*Cadastro popup*/
+
+/*Pop-ups de esqueci a senha*/
+
+
+.modal-cadastro {
+  background: #fff;
+  padding: 2rem;
+  font-family: Inter, sans-serif;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.logo-cadastro {
+  width: 100px;
+  margin-bottom: 1.8rem;
+  padding-top: 10px;
+}
+
+.modal-cadastro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  position: relative;
+  text-align: left;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-cadastro h2,
+.modal-cadastro p {
+  text-align: left;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 0.5rem;
+}
+
+.modal-cadastro form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1rem 0;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+}
+
+
+.modal-cadastro input {
+  border: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  padding: 0.75rem 0.2rem;
+  font-size: 1rem;
+  background-color: transparent;
+  color: #333;
+  transition: border-color 0.3s ease;
+  width: 300px;
+  align-items: center;
+}
+
+.modal-cadastro input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+  /* cor mais clara como referência */
+}
+
+.modal-cadastro input:focus {
+  outline: none;
+  border-bottom-color: #FF7100;
+}
+
+.modal-cadastro button {
+  background-color: #B4580F;
+  color: #fff;
+  padding: 0.75rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal-cadastro button:hover {
+  background-color: #944509;
+}
+
+.modal-cadastro button[type="submit"] {
+  margin-top: 1rem;
+  background-color: #FF7100;
+  border-radius: 12px;
+  font-size: 1rem;
+  padding: 0.75rem;
+}
+
+.modal-cadastro button[type="submit"]:hover {
+  background-color: #e36400;
+}
+
+.login-link,
+.termos {
+  text-align: left;
+  width: 100%;
+}
+
+.login-link a,
+.termos a {
+  color: #B4580F;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+}
+
+/*Login*/
+
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  /* mostrar via JS */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.login-popup {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 360px;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  font-family: Arial, sans-serif;
+}
+
+.login-popup .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.login-popup .logo {
+  width: 40px;
+  margin-bottom: 15px;
+}
+
+.login-popup h2 {
+  font-size: 22px;
+  margin: 0;
+  font-weight: bold;
+}
+
+.login-popup .subtitle {
+  font-size: 14px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  background: #dedcdc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 12px;
+}
+
+.input-icon img {
+  width: 18px;
+  margin-right: 10px;
+}
+
+.input-icon input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  width: 100%;
+}
+
+.extra-links,
+.signup {
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.extra-links a,
+.signup a {
+  color: #e63900;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-entrar {
+  width: 100%;
+  padding: 12px;
+  background: #c33a1a;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.btn-entrar:hover {
+  background: #a42f16;
+}
+
+#verificacao-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.terms {
+  font-size: 11px;
+  color: #333;
+  text-align: center;
+}
+
+.terms a {
+  color: #e63900;
+  text-decoration: none;
+}
+
+.esqueceu-senha {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.esqueceu-senha a {
+  color: #d93600;
+  /* vermelho similar ao usado no botão */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.esqueceu-senha a:hover {
+  text-decoration: underline;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
+  text-align: center;
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.popup-content p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.popup-content input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.popup-content button {
+  background-color: #007BFF;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background-color: #0056b3;
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.mensagem-ok {
+  color: green;
+  margin-top: 10px;
+}
+
+/* POP-UP de recuperação */
+#recuperacao-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-cadastro {
+  background-color: #fbfcf8;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 420px;
+  width: 100%;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-cadastro img.logo-cadastro {
+  width: 90px;
+  margin-bottom: 5px;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  align-self: center;
+}
+
+.modal-cadastro h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  text-decoration: underline;
+  text-align: center;
+}
+
+.modal-cadastro p {
+  color: #666;
+  font-size: 14px;
+  margin: 10px 0 20px;
+  text-align: center;
+}
+
+.modal-cadastro form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-cadastro input {
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  background-color: transparent;
+  font-size: 16px;
+  outline: none;
+  color: #333;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.modal-cadastro input::placeholder {
+  color: #888;
+  font-weight: bold;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  align-self: center;
+  place-items: center;
+}
+
+.modal-cadastro button[type="submit"] {
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.modal-cadastro .voltar-login {
+  margin-top: 15px;
+}
+
+.modal-cadastro .voltar-login a {
+  color: #c0392b;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.modal-cadastro .close-btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000;
+}
+
+/*confirmar senha
+.erro-senha {
+  border-bottom: 2px solid red !important;
+  color: red;
+}
+
+/* Linha separadora */
+.linha-separadora {
+  width: 700px;
+  height: 2px;
+  background-color: #dcdcdc;
+  margin: 60px auto 40px auto;
+  border-radius: 4px;
+  margin-top:100px;
+  align-items: center;
+
+}
+
+/* Seção inferior de eventos */
+.eventos-inferior {
+  padding: 40px 5% 80px;
+  background-color: #FBFCF8;
+  text-align: center;
+  font-family: Inter, sans-serif;
+  color: #333;
+  margin-top: 300px;
+  
+  
+}
+
+.eventos-inferior h2 {
+  font-size: 2.2rem;
+  color: black;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 87px;
+  margin-left: 77px;
+  text-align: start;
+}
+
+.eventos-container {
+  display: flex;
+  flex-wrap: wrap; /* para quebrar linha quando não couber */
+  gap: 20px; /* espaço entre os cards */
+  justify-content: center; /* centraliza os cards */
+  padding: 20px;
+}
+
+/* Card do evento */
+.evento-card {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  min-height: 340px;
+}
+
+.evento-card:hover {
+  transform: translateY(-6px);
+}
+
+/* Grid de eventos */
+.eventos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.evento-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  max-width: 300px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  min-height: 370px;
+}
+
+.evento-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.evento-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.btn-curtir {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.btn-curtir img {
+  width: 28px;
+  height: 28px;
+  transition: filter 0.5s;
+}
+
+.btn-curtir:hover img {
+  filter:invert(1);
+}
+
+
+.evento-card h3 {
+  font-size: 1.2rem;
+  margin: 15px 0 10px;
+  color: #222;
+}
+
+.evento-card p {
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  color: #555;
+  padding: 0 10px;
+}
+
+.evento-card a {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  background-color: #09b8b8;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.evento-card a:hover {
+  background-color: #077c7c;
+}
+
+.evento-info {
+  padding: 16px;
+}
+
+.evento-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.evento-info p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.evento-info a {
+  display: inline-block;
+  padding: 8px 14px;
+  background-color:  rgba(180, 88, 15, 0.76);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.evento-info a:hover {
+  background-color:  rgba(170, 116, 72, 0.76);
+}
+/* Scroll */
+:root {
+  --sb-track-color: #F5F5F5;
+  --sb-thumb-color: #D62929;
+  --sb-size: 12px;
+  --sb-radius: 10px;
+}
+
+.custom-scrollbar {
+  overflow-y: scroll;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: var(--sb-radius);
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: var(--sb-radius);
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+
+@supports not selector(::-webkit-scrollbar) {
+  .custom-scrollbar {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
+
+/*Caixa*/
+
+select {
+  background-color: #cf0000;
+  color: #000;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Cor preta apenas nos selects e inputs de data dos filtros de busca */
+.filtros .filtro-box select,
+.filtros .filtro-box input[type="date"] {
+  color: #fff;
+}
+
+.filtros .filtro-box select:focus,
+.filtros .filtro-box select:active {
+  color: #222;
+}
+
+.menu-cidades-cascata {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  min-width: 340px;
+  max-width: 520px;
+  margin-top: 8px;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.menu-cidades-cascata .estados-lista, .menu-cidades-cascata .cidades-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 140px;
+  background: #fff;
+}
+
+.menu-cidades-cascata .estados-lista li, .menu-cidades-cascata .cidades-lista li {
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1.02rem;
+  color: #222;
+}
+
+.menu-cidades-cascata .estados-lista li:hover, .menu-cidades-cascata .estados-lista li.active {
+  background: #f5f5f5;
+  color: #2196f3;
+}
+
+.menu-cidades-cascata .cidades-lista li:hover {
+  background: #f0f0f0;
+  color: #e67e22;
+}
+
+@media (max-width: 700px) {
+  .menu-cidades-cascata {
+    flex-direction: column;
+    min-width: 200px;
+    max-width: 100vw;
+    left: 0;
+    right: 0;
+  }
+  .menu-cidades-cascata .estados-lista, .menu-cidades-cascata .cidades-lista {
+    min-width: 100%;
+  }
+}
+
+#estado.menu-cidades-open {
+  display: none;
+}
+
+.menu-tipo-cascata {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  min-width: 340px;
+  max-width: 520px;
+  margin-top: 8px;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.menu-tipo-cascata .tipos-lista, .menu-tipo-cascata .subtipos-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 140px;
+  background: #fff;
+}
+
+.menu-tipo-cascata .tipos-lista li, .menu-tipo-cascata .subtipos-lista li {
+  padding: 10px 16px;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1.02rem;
+  color: #222;
+}
+
+.menu-tipo-cascata .tipos-lista li:hover, .menu-tipo-cascata .tipos-lista li.active {
+  background: #f5f5f5;
+  color: #2196f3;
+}
+
+.menu-tipo-cascata .subtipos-lista li:hover {
+  background: #f0f0f0;
+  color: #e67e22;
+}
+
+@media (max-width: 700px) {
+  .menu-tipo-cascata {
+    flex-direction: column;
+    min-width: 200px;
+    max-width: 100vw;
+    left: 0;
+    right: 0;
+  }
+  .menu-tipo-cascata .tipos-lista, .menu-tipo-cascata .subtipos-lista {
+    min-width: 100%;
+  }
+}
+
+#tipo-evento.menu-cidades-open {
+  display: none;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-cidades-cascata,
+.menu-tipo-cascata {
+  animation: fadeSlideIn 0.25s cubic-bezier(0.4, 0.2, 0.2, 1);
+  background: linear-gradient(135deg, rgba(255,113,0,0.92) 0%, rgba(255,180,80,0.85) 100%);
+}
+
+.menu-cidades-cascata .estados-lista, .menu-cidades-cascata .cidades-lista,
+.menu-tipo-cascata .tipos-lista, .menu-tipo-cascata .subtipos-lista {
+  background: transparent;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 0;
+  box-sizing: border-box;
+}
+
+.menu-cidades-cascata .estados-lista li, .menu-cidades-cascata .cidades-lista li,
+.menu-tipo-cascata .tipos-lista li, .menu-tipo-cascata .subtipos-lista li {
+  color: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.menu-cidades-cascata .estados-lista li:hover, .menu-cidades-cascata .estados-lista li.active,
+.menu-tipo-cascata .tipos-lista li:hover, .menu-tipo-cascata .tipos-lista li.active {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+.menu-cidades-cascata .cidades-lista li:hover,
+.menu-tipo-cascata .subtipos-lista li:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+.menu-calendario-cascata {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba(255,113,0,0.92) 0%, rgba(255,180,80,0.85) 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  min-width: 340px;
+  max-width: 400px;
+  margin-top: 8px;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  z-index: 100;
+  animation: fadeSlideIn 0.25s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.calendario-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px 6px 18px;
+  background: transparent;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.calendario-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.calendario-header button:hover {
+  background: rgba(255,255,255,0.18);
+}
+
+.calendario-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.calendario-table th, .calendario-table td {
+  text-align: center;
+  padding: 8px 0;
+  color: #fff;
+  font-size: 1.05rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.calendario-table th {
+  font-weight: bold;
+  background: transparent;
+  color: #fff;
+  cursor: default;
+}
+
+.calendario-table td:hover {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+}
+
+.calendario-table td.selected {
+  background: #fff;
+  color: #ff7100;
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .menu-calendario-cascata {
+    min-width: 200px;
+    max-width: 100vw;
+    left: 0;
+    right: 0;
+  }
+}
+
+#quando-filtro-box .filtro-input input[type="text"] {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+  padding: 0.5rem 0.2rem;
+  font-size: 1.1rem;
+  width: 100%;
+  transition: border-color 0.3s;
+}
+
+#quando-filtro-box .filtro-input input[type="text"]:focus {
+  outline: none;
+  border-bottom-color: #FBFCF8;
+}
+
+/* Deixar o texto e o placeholder do campo #quando brancos */
+#quando,
+#quando::placeholder {
+  color: #fff !important;
+  opacity: 1;
+}
+
+/* Animações para Modais */
+.modal-overlay {
+  /* ... estilos existentes ... */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.modal-overlay:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.modal-content {
+  /* ... estilos existentes ... */
+  transform: scale(0.9) translateY(-20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-overlay:not(.hidden) .modal-content {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Efeito de hover e clique nos botões de autenticação */
+.auth-buttons .btn,
+#botaoCadastrar {
+  /* ... estilos existentes ... */
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease; /* Adicionada transição para background-color */
+}
+
+.auth-buttons .btn:hover,
+#botaoCadastrar:hover {
+  /* ... estilos existentes ... */
+  background-color: rgba(180, 88, 15, 0.9); /* Escurece um pouco no hover */
+}
+
+.auth-buttons .btn:active,
+#botaoCadastrar:active {
+  transform: translateY(0px) scale(0.98); /* Efeito de clique mais sutil */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
